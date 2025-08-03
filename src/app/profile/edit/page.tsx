@@ -163,7 +163,7 @@ export default function ProfileEditPage() {
     setMessage(null)
 
     try {
-      await authService.updateUserProfile({
+      await authService.updateProfile({
         full_name: formData.full_name.trim(),
         whatsapp: formatWhatsApp(formData.whatsapp.trim()),
         affiliate_link: formData.affiliate_link.trim()

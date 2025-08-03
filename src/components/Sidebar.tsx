@@ -34,7 +34,7 @@ export default function Sidebar({ userProfile }: SidebarProps) {
     return null // No mostrar sidebar si no hay usuario autenticado
   }
 
-  const displayName = formatUserName(userProfile.full_name) || 'Constructor'
+  const displayName = formatUserName(userProfile.full_name || '') || 'Constructor'
 
   return (
     <aside className="hidden md:flex w-80 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 text-white flex-col relative overflow-hidden">

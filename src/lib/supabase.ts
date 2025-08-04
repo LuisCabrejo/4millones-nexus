@@ -1,8 +1,9 @@
-// lib/supabase.ts - AuthService Completo
+// lib/supabase.ts - ARREGLADO con valores directos
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key'
+// ✅ SOLUCIÓN: Usar valores directos como portal.4millones.com
+const supabaseUrl = 'https://ovsvocjvjnqfaaugwnxg.supabase.co'
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92c3ZvY2p2am5xZmFhdWd3bnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE3ODEyMzcsImV4cCI6MjA2NzM1NzIzN30.ZErzsooaSXnS-NdmMYD0JcZFupFgrXfMLH-nOvU1NTE'
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 

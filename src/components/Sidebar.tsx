@@ -10,6 +10,14 @@ interface SidebarProps {
   userProfile: UserProfile | null
 }
 
+// ✅ NUEVA FUNCIÓN: Crear slug amigable para URLs
+const createSlug = (name: string) => {
+  return name
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]/g, '')
+}
+
 export default function Sidebar({ userProfile }: SidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
@@ -30,19 +38,19 @@ export default function Sidebar({ userProfile }: SidebarProps) {
     }
   }
 
-  // ✅ NUEVA FUNCIÓN: Compartir vía WhatsApp con mensajes estratégicos
+  // ✅ FUNCIÓN CORREGIDA: URLs con distribuidor y slugs amigables
   const shareViaWhatsApp = (type: 'catalog' | 'business') => {
     if (!userProfile) return
 
     let message = ''
     let url = ''
-    const userId = userProfile.id || userProfile.email?.split('@')[0] || 'socio'
     const whatsappNumber = userProfile.whatsapp || '3102066593'
 
-    // URLs personalizadas para usuario registrado
+    // URLs personalizadas para usuario registrado con slug amigable
+    const userSlug = createSlug(userProfile.full_name || 'socio')
     url = type === 'catalog'
-      ? `https://catalogo.4millones.com?socio=${userId}`
-      : `https://oportunidad.4millones.com?socio=${userId}`
+      ? `https://catalogo.4millones.com/?distribuidor=${userSlug}`
+      : `https://oportunidad.4millones.com/?distribuidor=${userSlug}`
 
     // Mensajes estratégicos acordados
     if (type === 'catalog') {
@@ -64,6 +72,17 @@ ${url}`
     // Abrir WhatsApp
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')
+  }
+
+  // ✅ FUNCIÓN NUEVA: URLs directas para botones "Ver"
+  const getDirectUrl = (type: 'catalog' | 'business') => {
+    if (!userProfile) return ''
+
+    // Usuario registrado - slug amigable
+    const userSlug = createSlug(userProfile.full_name || 'socio')
+    return type === 'catalog'
+      ? `https://catalogo.4millones.com/?distribuidor=${userSlug}`
+      : `https://oportunidad.4millones.com/?distribuidor=${userSlug}`
   }
 
   if (!userProfile) {
@@ -274,7 +293,7 @@ ${url}`
               </div>
             </div>
 
-            {/* ✅ HERRAMIENTAS ACTIVAS - ARREGLADAS CON BOTONES WHATSAPP */}
+            {/* ✅ HERRAMIENTAS ACTIVAS - CORREGIDAS CON NUEVAS URLs */}
             <div className="pt-6 border-t border-white/10">
               <p className="text-white/50 text-xs font-bold uppercase tracking-wider mb-4 px-5 flex items-center">
                 <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse" />
@@ -282,7 +301,7 @@ ${url}`
               </p>
 
               <div className="space-y-3">
-                {/* ✅ CATÁLOGO PREMIUM - CON BOTONES FUNCIONALES */}
+                {/* ✅ CATÁLOGO PREMIUM - CON BOTONES FUNCIONALES CORREGIDOS */}
                 <div className="px-5">
                   <div className="bg-white/5 rounded-xl p-4 hover:bg-white/10 transition-all duration-300">
                     <div className="flex items-center space-x-3 mb-3">
@@ -298,7 +317,7 @@ ${url}`
                     </div>
                     <div className="flex space-x-2">
                       <a
-                        href={`https://catalogo.4millones.com?socio=${userProfile.id || userProfile.email?.split('@')[0] || 'socio'}`}
+                        href={getDirectUrl('catalog')}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex-1 bg-green-500/20 hover:bg-green-500/30 text-green-300 text-center py-2 px-3 rounded-lg text-xs font-medium transition-colors"
@@ -315,7 +334,7 @@ ${url}`
                   </div>
                 </div>
 
-                {/* ✅ ARQUITECTURA EMPRESARIAL - CON BOTONES FUNCIONALES */}
+                {/* ✅ ARQUITECTURA EMPRESARIAL - CON BOTONES FUNCIONALES CORREGIDOS */}
                 <div className="px-5">
                   <div className="bg-white/5 rounded-xl p-4 hover:bg-white/10 transition-all duration-300">
                     <div className="flex items-center space-x-3 mb-3">
@@ -331,7 +350,7 @@ ${url}`
                     </div>
                     <div className="flex space-x-2">
                       <a
-                        href={`https://oportunidad.4millones.com?socio=${userProfile.id || userProfile.email?.split('@')[0] || 'socio'}`}
+                        href={getDirectUrl('business')}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex-1 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 text-center py-2 px-3 rounded-lg text-xs font-medium transition-colors"

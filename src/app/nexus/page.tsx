@@ -14,6 +14,14 @@ interface MetricCardProps {
   isDemo?: boolean
 }
 
+// ✅ NUEVA FUNCIÓN: Crear slug amigable para URLs
+const createSlug = (name: string) => {
+  return name
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]/g, '')
+}
+
 const MetricCard = ({ title, value, change, trend, icon, gradient, isDemo = false }: MetricCardProps) => {
   const [animatedValue, setAnimatedValue] = useState('0')
 
@@ -60,13 +68,13 @@ const MetricCard = ({ title, value, change, trend, icon, gradient, isDemo = fals
   )
 }
 
-// Componente para navegación de usuario NO autenticado en móvil
+// ✅ CORREGIDO: Componente para navegación de usuario NO autenticado en móvil
 const PublicMobileMenu = ({ onClose }: { onClose: () => void }) => {
-  // ✅ FUNCIÓN WHATSAPP PARA USUARIOS NO REGISTRADOS
+  // ✅ FUNCIÓN WHATSAPP CORREGIDA PARA USUARIOS NO REGISTRADOS
   const shareViaWhatsApp = (type: 'catalog' | 'business') => {
     const url = type === 'catalog'
-      ? 'https://catalogo.4millones.com'
-      : 'https://oportunidad.4millones.com'
+      ? 'https://catalogo.4millones.com/?distribuidor=liliana-patricia'
+      : 'https://oportunidad.4millones.com/?distribuidor=liliana-patricia'
     const whatsapp = '3102066593'
 
     let message = ''
@@ -143,13 +151,13 @@ ${url}`
         </Link>
       </div>
 
-      {/* ✅ HERRAMIENTAS DISPONIBLES CON WHATSAPP PARA NO REGISTRADOS */}
+      {/* ✅ HERRAMIENTAS DISPONIBLES CORREGIDAS CON WHATSAPP PARA NO REGISTRADOS */}
       <div className="border-t border-white/10 py-2">
         <div className="px-4 py-2">
           <span className="text-xs text-white/50 font-semibold uppercase tracking-wide">Herramientas Disponibles</span>
         </div>
 
-        {/* Catálogo con botones funcionales */}
+        {/* Catálogo con botones funcionales CORREGIDOS */}
         <div className="px-4 py-2">
           <div className="bg-white/5 rounded-lg p-3">
             <div className="flex items-center space-x-3 mb-2">
@@ -165,7 +173,7 @@ ${url}`
             </div>
             <div className="flex space-x-2">
               <a
-                href="https://catalogo.4millones.com"
+                href="https://catalogo.4millones.com/?distribuidor=liliana-patricia"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 bg-green-500/20 hover:bg-green-500/30 text-green-300 text-center py-2 px-3 rounded-lg text-xs font-medium transition-colors"
@@ -186,7 +194,7 @@ ${url}`
           </div>
         </div>
 
-        {/* Arquitectura Empresarial con botones funcionales */}
+        {/* Arquitectura Empresarial con botones funcionales CORREGIDOS */}
         <div className="px-4 py-2">
           <div className="bg-white/5 rounded-lg p-3">
             <div className="flex items-center space-x-3 mb-2">
@@ -202,7 +210,7 @@ ${url}`
             </div>
             <div className="flex space-x-2">
               <a
-                href="https://oportunidad.4millones.com"
+                href="https://oportunidad.4millones.com/?distribuidor=liliana-patricia"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 text-center py-2 px-3 rounded-lg text-xs font-medium transition-colors"
@@ -263,7 +271,7 @@ ${url}`
   )
 }
 
-// ✅ MEJORADO: Componente para navegación de usuario autenticado en móvil
+// ✅ CORREGIDO: Componente para navegación de usuario autenticado en móvil
 const AuthenticatedMobileMenu = ({ userProfile, onClose }: { userProfile: UserProfile, onClose: () => void }) => {
   const handleLogout = async () => {
     await authService.signOut()
@@ -273,12 +281,12 @@ const AuthenticatedMobileMenu = ({ userProfile, onClose }: { userProfile: UserPr
 
   const displayName = userProfile?.full_name || userProfile?.email?.split('@')[0] || 'Constructor'
 
-  // ✅ FUNCIÓN COMPARTIR WHATSAPP PARA USUARIOS REGISTRADOS
+  // ✅ FUNCIÓN COMPARTIR WHATSAPP CORREGIDA PARA USUARIOS REGISTRADOS
   const shareViaWhatsApp = (type: 'catalog' | 'business') => {
-    const userId = userProfile.id || userProfile.email?.split('@')[0] || 'socio'
+    const userSlug = createSlug(userProfile.full_name || 'socio')
     const url = type === 'catalog'
-      ? `https://catalogo.4millones.com?socio=${userId}`
-      : `https://oportunidad.4millones.com?socio=${userId}`
+      ? `https://catalogo.4millones.com/?distribuidor=${userSlug}`
+      : `https://oportunidad.4millones.com/?distribuidor=${userSlug}`
     const whatsapp = userProfile.whatsapp || '3102066593'
 
     let message = ''
@@ -303,6 +311,14 @@ ${url}
     }
 
     window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`, '_blank')
+  }
+
+  // ✅ FUNCIÓN NUEVA: URLs directas para botones "Ver"
+  const getDirectUrl = (type: 'catalog' | 'business') => {
+    const userSlug = createSlug(userProfile.full_name || 'socio')
+    return type === 'catalog'
+      ? `https://catalogo.4millones.com/?distribuidor=${userSlug}`
+      : `https://oportunidad.4millones.com/?distribuidor=${userSlug}`
   }
 
   return (
@@ -361,13 +377,13 @@ ${url}
         </Link>
       </div>
 
-      {/* ✅ HERRAMIENTAS ACTIVAS CON BOTONES FUNCIONALES */}
+      {/* ✅ HERRAMIENTAS ACTIVAS CON BOTONES FUNCIONALES CORREGIDOS */}
       <div className="border-t border-white/10 py-2">
         <div className="px-4 py-2">
           <span className="text-xs text-white/50 font-semibold uppercase tracking-wide">Herramientas Activas</span>
         </div>
 
-        {/* Catálogo Digital con botones FUNCIONALES */}
+        {/* Catálogo Digital con botones FUNCIONALES CORREGIDOS */}
         <div className="px-4 py-2">
           <div className="bg-white/5 rounded-lg p-3">
             <div className="flex items-center justify-between mb-2">
@@ -385,7 +401,7 @@ ${url}
             </div>
             <div className="flex space-x-2">
               <a
-                href={`https://catalogo.4millones.com?socio=${userProfile.id || userProfile.email?.split('@')[0] || 'socio'}`}
+                href={getDirectUrl('catalog')}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 bg-green-500/20 hover:bg-green-500/30 text-green-300 text-center py-2 px-3 rounded-lg text-xs font-medium transition-colors"
@@ -406,7 +422,7 @@ ${url}
           </div>
         </div>
 
-        {/* ✅ ARQUITECTURA EMPRESARIAL ARREGLADA */}
+        {/* ✅ ARQUITECTURA EMPRESARIAL CORREGIDA */}
         <div className="px-4 py-2">
           <div className="bg-white/5 rounded-lg p-3">
             <div className="flex items-center justify-between mb-2">
@@ -424,7 +440,7 @@ ${url}
             </div>
             <div className="flex space-x-2">
               <a
-                href={`https://oportunidad.4millones.com?socio=${userProfile.id || userProfile.email?.split('@')[0] || 'socio'}`}
+                href={getDirectUrl('business')}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 text-center py-2 px-3 rounded-lg text-xs font-medium transition-colors"
@@ -582,6 +598,47 @@ export default function NexusIntelligentPage() {
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
+
+  // ✅ FUNCIÓN NUEVA: URLs directas para usuarios (registrados/no registrados)
+  const getDirectUrl = (type: 'catalog' | 'business') => {
+    if (userProfile) {
+      // Usuario registrado - slug amigable
+      const userSlug = createSlug(userProfile.full_name || 'socio')
+      return type === 'catalog'
+        ? `https://catalogo.4millones.com/?distribuidor=${userSlug}`
+        : `https://oportunidad.4millones.com/?distribuidor=${userSlug}`
+    } else {
+      // Usuario NO registrado - distribuidor por defecto
+      return type === 'catalog'
+        ? 'https://catalogo.4millones.com/?distribuidor=liliana-patricia'
+        : 'https://oportunidad.4millones.com/?distribuidor=liliana-patricia'
+    }
+  }
+
+  // ✅ FUNCIÓN CORREGIDA: WhatsApp URLs para ambos tipos de usuario
+  const shareViaWhatsApp = (type: 'catalog' | 'business') => {
+    const url = getDirectUrl(type)
+    const whatsapp = userProfile?.whatsapp || '3102066593'
+
+    let message = ''
+    if (type === 'catalog') {
+      message = `🌿 *Catálogo Premium Gano Excel*
+
+Experimenta productos únicos con Ganoderma Lucidum de las 6 variedades más potentes del mundo.
+
+Descubre el bienestar auténtico:
+${url}`
+    } else {
+      message = `🏗️ *Arquitectura Empresarial 4M*
+
+El sistema que transforma el consumo diario en un activo empresarial heredable.
+
+Conoce la plataforma:
+${url}`
+    }
+
+    window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`, '_blank')
+  }
 
   if (loading) {
     return (
@@ -891,14 +948,14 @@ export default function NexusIntelligentPage() {
         {/* CTA o Acciones según usuario */}
         {!userProfile && <RegistrationCTA />}
 
-        {/* ✅ ARREGLADO: Herramientas Disponibles con WhatsApp para TODOS */}
+        {/* ✅ ARREGLADO: Herramientas Disponibles con URLs corregidas para TODOS */}
         <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 lg:p-8 border border-white/20">
           <h2 className="text-2xl lg:text-3xl font-bold text-white mb-4 lg:mb-6 text-center">
             ⚡ Herramientas Disponibles Ahora
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
 
-            {/* ✅ CATÁLOGO PREMIUM - CON BOTONES FUNCIONALES PARA TODOS */}
+            {/* ✅ CATÁLOGO PREMIUM - CON BOTONES FUNCIONALES CORREGIDOS PARA TODOS */}
             <div className="bg-white/10 backdrop-blur-lg rounded-xl p-4 lg:p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
               <div className="flex items-center space-x-3 lg:space-x-4 mb-4">
                 <div className="p-2 lg:p-3 bg-green-500/20 rounded-lg">
@@ -913,10 +970,7 @@ export default function NexusIntelligentPage() {
               </div>
               <div className="flex space-x-2">
                 <a
-                  href={userProfile
-                    ? `https://catalogo.4millones.com?socio=${userProfile.id || userProfile.email?.split('@')[0] || 'socio'}`
-                    : 'https://catalogo.4millones.com'
-                  }
+                  href={getDirectUrl('catalog')}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 bg-green-500/20 hover:bg-green-500/30 text-green-300 text-center py-2 lg:py-3 px-3 lg:px-4 rounded-lg text-xs lg:text-sm font-medium transition-colors"
@@ -924,19 +978,7 @@ export default function NexusIntelligentPage() {
                   👀 Ver Catálogo
                 </a>
                 <button
-                  onClick={() => {
-                    const url = userProfile
-                      ? `https://catalogo.4millones.com?socio=${userProfile.id || userProfile.email?.split('@')[0] || 'socio'}`
-                      : 'https://catalogo.4millones.com'
-                    const whatsapp = userProfile?.whatsapp || '3102066593'
-                    const message = `🌿 *Catálogo Premium Gano Excel*
-
-Experimenta productos únicos con Ganoderma Lucidum de las 6 variedades más potentes del mundo.
-
-Descubre el bienestar auténtico:
-${url}`
-                    window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`, '_blank')
-                  }}
+                  onClick={() => shareViaWhatsApp('catalog')}
                   className="flex-1 bg-green-600/20 hover:bg-green-600/30 text-green-300 text-center py-2 lg:py-3 px-3 lg:px-4 rounded-lg text-xs lg:text-sm font-medium transition-colors"
                 >
                   📱 Compartir
@@ -944,7 +986,7 @@ ${url}`
               </div>
             </div>
 
-            {/* ✅ ARQUITECTURA EMPRESARIAL - CON BOTONES FUNCIONALES PARA TODOS */}
+            {/* ✅ ARQUITECTURA EMPRESARIAL - CON BOTONES FUNCIONALES CORREGIDOS PARA TODOS */}
             <div className="bg-white/10 backdrop-blur-lg rounded-xl p-4 lg:p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
               <div className="flex items-center space-x-3 lg:space-x-4 mb-4">
                 <div className="p-2 lg:p-3 bg-blue-500/20 rounded-lg">
@@ -959,10 +1001,7 @@ ${url}`
               </div>
               <div className="flex space-x-2">
                 <a
-                  href={userProfile
-                    ? `https://oportunidad.4millones.com?socio=${userProfile.id || userProfile.email?.split('@')[0] || 'socio'}`
-                    : 'https://oportunidad.4millones.com'
-                  }
+                  href={getDirectUrl('business')}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 text-center py-2 lg:py-3 px-3 lg:px-4 rounded-lg text-xs lg:text-sm font-medium transition-colors"
@@ -970,19 +1009,7 @@ ${url}`
                   👀 Ver Plataforma
                 </a>
                 <button
-                  onClick={() => {
-                    const url = userProfile
-                      ? `https://oportunidad.4millones.com?socio=${userProfile.id || userProfile.email?.split('@')[0] || 'socio'}`
-                      : 'https://oportunidad.4millones.com'
-                    const whatsapp = userProfile?.whatsapp || '3102066593'
-                    const message = `🏗️ *Arquitectura Empresarial 4M*
-
-El sistema que transforma el consumo diario en un activo empresarial heredable.
-
-Conoce la plataforma:
-${url}`
-                    window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`, '_blank')
-                  }}
+                  onClick={() => shareViaWhatsApp('business')}
                   className="flex-1 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 text-center py-2 lg:py-3 px-3 lg:px-4 rounded-lg text-xs lg:text-sm font-medium transition-colors"
                 >
                   📱 Compartir

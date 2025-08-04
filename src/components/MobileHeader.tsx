@@ -41,32 +41,44 @@ export default function MobileHeader({ userProfile }: MobileHeaderProps) {
 
   // ✅ NUEVA FUNCIÓN: Compartir vía WhatsApp con mensajes estratégicos
   const shareViaWhatsApp = (type: 'catalog' | 'business') => {
-    const catalogUrl = userProfile
-      ? `https://catalogo.4millones.com?socio=${userProfile.id}`
-      : 'https://catalogo.4millones.com'
+    let message = ''
+    let url = ''
+    let whatsappNumber = ''
 
-    const businessUrl = userProfile
-      ? `https://oportunidad.4millones.com?socio=${userProfile.id}`
-      : 'https://oportunidad.4millones.com'
-
-    const whatsappNumber = userProfile?.whatsapp || '310 2066593'
-
-    const messages = {
-      catalog: `🌿 *Catálogo Premium Gano Excel*
-Experimenta productos únicos con Ganoderma Lucidum de las 6 variedades más potentes del mundo.
-Descubre el bienestar auténtico:
-${catalogUrl}`,
-
-      business: `🏗️ *Arquitectura Empresarial 4M*
-El sistema que transforma el consumo diario en un activo empresarial heredable.
-Conoce la plataforma:
-${businessUrl}`
+    if (userProfile) {
+      // Usuario registrado - enlaces personalizados
+      const userId = userProfile.id || userProfile.email?.split('@')[0] || 'socio'
+      url = type === 'catalog'
+        ? `https://catalogo.4millones.com?socio=${userId}`
+        : `https://oportunidad.4millones.com?socio=${userId}`
+      whatsappNumber = userProfile.whatsapp || '3102066593'
+    } else {
+      // Usuario NO registrado - enlaces genéricos
+      url = type === 'catalog'
+        ? 'https://catalogo.4millones.com'
+        : 'https://oportunidad.4millones.com'
+      whatsappNumber = '3102066593'
     }
 
-    const cleanPhone = whatsappNumber.replace(/[^\d]/g, '')
-    const finalPhone = cleanPhone.startsWith('57') ? cleanPhone : `57${cleanPhone}`
+    // Mensajes estratégicos acordados
+    if (type === 'catalog') {
+      message = `🌿 *Catálogo Premium Gano Excel*
 
-    const whatsappUrl = `https://wa.me/${finalPhone}?text=${encodeURIComponent(messages[type])}`
+Experimenta productos únicos con Ganoderma Lucidum de las 6 variedades más potentes del mundo.
+
+Descubre el bienestar auténtico:
+${url}`
+    } else {
+      message = `🏗️ *Arquitectura Empresarial 4M*
+
+El sistema que transforma el consumo diario en un activo empresarial heredable.
+
+Conoce la plataforma:
+${url}`
+    }
+
+    // Abrir WhatsApp
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')
   }
 
@@ -187,13 +199,13 @@ ${businessUrl}`
                   </Link>
                 </div>
 
-                {/* ✅ HERRAMIENTAS ACTIVAS ARREGLADAS */}
+                {/* ✅ HERRAMIENTAS ACTIVAS - ARREGLADAS */}
                 <div className="border-t border-white/10 py-2">
                   <div className="px-4 py-2">
                     <span className="text-xs text-white/50 font-semibold uppercase tracking-wide">Herramientas Activas</span>
                   </div>
 
-                  {/* ✅ CATÁLOGO DIGITAL - Botones funcionales */}
+                  {/* ✅ CATÁLOGO DIGITAL - BOTONES FUNCIONALES */}
                   <div className="px-4 py-2">
                     <div className="bg-white/5 rounded-lg p-3">
                       <div className="flex items-center space-x-3 mb-3">
@@ -202,14 +214,14 @@ ${businessUrl}`
                             <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
                           </svg>
                         </div>
-                        <div>
-                          <div className="text-sm font-medium text-white">Catálogo Digital</div>
-                          <div className="text-xs text-white/50">Compartir Productos</div>
+                        <div className="flex-1">
+                          <div className="text-sm font-medium text-white">Catálogo Premium</div>
+                          <div className="text-xs text-white/50">Bienestar auténtico</div>
                         </div>
                       </div>
                       <div className="flex space-x-2">
                         <a
-                          href={`https://catalogo.4millones.com${userProfile?.id ? `?socio=${userProfile.id}` : ''}`}
+                          href={`https://catalogo.4millones.com?socio=${userProfile.id || userProfile.email?.split('@')[0] || 'socio'}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="flex-1 bg-green-500/20 hover:bg-green-500/30 text-green-300 text-center py-2 px-3 rounded-lg text-xs font-medium transition-colors"
@@ -230,7 +242,7 @@ ${businessUrl}`
                     </div>
                   </div>
 
-                  {/* ✅ OPORTUNIDAD DE NEGOCIO - Botones funcionales */}
+                  {/* ✅ ARQUITECTURA EMPRESARIAL - BOTONES FUNCIONALES */}
                   <div className="px-4 py-2">
                     <div className="bg-white/5 rounded-lg p-3">
                       <div className="flex items-center space-x-3 mb-3">
@@ -239,20 +251,20 @@ ${businessUrl}`
                             <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
                           </svg>
                         </div>
-                        <div>
-                          <div className="text-sm font-medium text-white">Oportunidad de Negocio</div>
-                          <div className="text-xs text-white/50">Presentar Visión</div>
+                        <div className="flex-1">
+                          <div className="text-sm font-medium text-white">Arquitectura Empresarial</div>
+                          <div className="text-xs text-white/50">Construir activos</div>
                         </div>
                       </div>
                       <div className="flex space-x-2">
                         <a
-                          href={`https://oportunidad.4millones.com${userProfile?.id ? `?socio=${userProfile.id}` : ''}`}
+                          href={`https://oportunidad.4millones.com?socio=${userProfile.id || userProfile.email?.split('@')[0] || 'socio'}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="flex-1 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 text-center py-2 px-3 rounded-lg text-xs font-medium transition-colors"
                           onClick={() => setShowDropdown(false)}
                         >
-                          👀 Ver Oportunidad
+                          👀 Ver Plataforma
                         </a>
                         <button
                           onClick={() => {

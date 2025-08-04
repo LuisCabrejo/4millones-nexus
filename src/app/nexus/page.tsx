@@ -60,30 +60,35 @@ const MetricCard = ({ title, value, change, trend, icon, gradient, isDemo = fals
   )
 }
 
-// ✅ NUEVA FUNCIÓN: Compartir vía WhatsApp para usuarios NO registrados
-const shareViaWhatsAppPublic = (type: 'catalog' | 'business') => {
-  const catalogUrl = 'https://catalogo.4millones.com'
-  const businessUrl = 'https://oportunidad.4millones.com'
-  const defaultWhatsApp = '57310 2066593' // Número por defecto
-
-  const messages = {
-    catalog: `🌿 *Catálogo Premium Gano Excel*
-Experimenta productos únicos con Ganoderma Lucidum de las 6 variedades más potentes del mundo.
-Descubre el bienestar auténtico:
-${catalogUrl}`,
-
-    business: `🏗️ *Arquitectura Empresarial 4M*
-El sistema que transforma el consumo diario en un activo empresarial heredable.
-Conoce la plataforma:
-${businessUrl}`
-  }
-
-  const whatsappUrl = `https://wa.me/${defaultWhatsApp}?text=${encodeURIComponent(messages[type])}`
-  window.open(whatsappUrl, '_blank')
-}
-
 // Componente para navegación de usuario NO autenticado en móvil
 const PublicMobileMenu = ({ onClose }: { onClose: () => void }) => {
+  // ✅ FUNCIÓN WHATSAPP PARA USUARIOS NO REGISTRADOS
+  const shareViaWhatsApp = (type: 'catalog' | 'business') => {
+    const url = type === 'catalog'
+      ? 'https://catalogo.4millones.com'
+      : 'https://oportunidad.4millones.com'
+    const whatsapp = '3102066593'
+
+    let message = ''
+    if (type === 'catalog') {
+      message = `🌿 *Catálogo Premium Gano Excel*
+
+Experimenta productos únicos con Ganoderma Lucidum de las 6 variedades más potentes del mundo.
+
+Descubre el bienestar auténtico:
+${url}`
+    } else {
+      message = `🏗️ *Arquitectura Empresarial 4M*
+
+El sistema que transforma el consumo diario en un activo empresarial heredable.
+
+Conoce la plataforma:
+${url}`
+    }
+
+    window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`, '_blank')
+  }
+
   return (
     <div className="absolute right-0 top-full mt-2 w-72 bg-slate-800/95 backdrop-blur-xl rounded-xl shadow-2xl border border-white/10 py-2 z-50">
       {/* Header del dropdown */}
@@ -138,24 +143,24 @@ const PublicMobileMenu = ({ onClose }: { onClose: () => void }) => {
         </Link>
       </div>
 
-      {/* ✅ HERRAMIENTAS DISPONIBLES CON BOTONES FUNCIONALES */}
+      {/* ✅ HERRAMIENTAS DISPONIBLES CON WHATSAPP PARA NO REGISTRADOS */}
       <div className="border-t border-white/10 py-2">
         <div className="px-4 py-2">
           <span className="text-xs text-white/50 font-semibold uppercase tracking-wide">Herramientas Disponibles</span>
         </div>
 
-        {/* ✅ CATÁLOGO DIGITAL CON BOTONES */}
+        {/* Catálogo con botones funcionales */}
         <div className="px-4 py-2">
           <div className="bg-white/5 rounded-lg p-3">
-            <div className="flex items-center space-x-3 mb-3">
+            <div className="flex items-center space-x-3 mb-2">
               <div className="p-2 bg-green-500/20 rounded-lg">
                 <svg className="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
                 </svg>
               </div>
               <div className="flex-1">
-                <div className="text-sm font-medium text-white">📱 Catálogo Digital</div>
-                <div className="text-xs text-white/50">Productos premium</div>
+                <div className="text-sm font-medium text-white">🌿 Catálogo Premium</div>
+                <div className="text-xs text-white/50">Bienestar auténtico</div>
               </div>
             </div>
             <div className="flex space-x-2">
@@ -170,7 +175,7 @@ const PublicMobileMenu = ({ onClose }: { onClose: () => void }) => {
               </a>
               <button
                 onClick={() => {
-                  shareViaWhatsAppPublic('catalog')
+                  shareViaWhatsApp('catalog')
                   onClose()
                 }}
                 className="flex-1 bg-green-600/20 hover:bg-green-600/30 text-green-300 text-center py-2 px-3 rounded-lg text-xs font-medium transition-colors"
@@ -181,18 +186,18 @@ const PublicMobileMenu = ({ onClose }: { onClose: () => void }) => {
           </div>
         </div>
 
-        {/* ✅ OPORTUNIDAD DE NEGOCIO CON BOTONES */}
+        {/* Arquitectura Empresarial con botones funcionales */}
         <div className="px-4 py-2">
           <div className="bg-white/5 rounded-lg p-3">
-            <div className="flex items-center space-x-3 mb-3">
+            <div className="flex items-center space-x-3 mb-2">
               <div className="p-2 bg-blue-500/20 rounded-lg">
                 <svg className="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
                 </svg>
               </div>
               <div className="flex-1">
-                <div className="text-sm font-medium text-white">🚀 Oportunidad de Negocio</div>
-                <div className="text-xs text-white/50">Visión empresarial</div>
+                <div className="text-sm font-medium text-white">🏗️ Arquitectura Empresarial</div>
+                <div className="text-xs text-white/50">Construir activos</div>
               </div>
             </div>
             <div className="flex space-x-2">
@@ -203,11 +208,11 @@ const PublicMobileMenu = ({ onClose }: { onClose: () => void }) => {
                 className="flex-1 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 text-center py-2 px-3 rounded-lg text-xs font-medium transition-colors"
                 onClick={onClose}
               >
-                👀 Ver Oportunidad
+                👀 Ver Plataforma
               </a>
               <button
                 onClick={() => {
-                  shareViaWhatsAppPublic('business')
+                  shareViaWhatsApp('business')
                   onClose()
                 }}
                 className="flex-1 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 text-center py-2 px-3 rounded-lg text-xs font-medium transition-colors"
@@ -268,29 +273,36 @@ const AuthenticatedMobileMenu = ({ userProfile, onClose }: { userProfile: UserPr
 
   const displayName = userProfile?.full_name || userProfile?.email?.split('@')[0] || 'Constructor'
 
-  // ✅ FUNCIÓN COMPARTIR WHATSAPP ARREGLADA PARA USUARIOS REGISTRADOS
+  // ✅ FUNCIÓN COMPARTIR WHATSAPP PARA USUARIOS REGISTRADOS
   const shareViaWhatsApp = (type: 'catalog' | 'business') => {
-    const catalogUrl = `https://catalogo.4millones.com?socio=${userProfile.id}`
-    const businessUrl = `https://oportunidad.4millones.com?socio=${userProfile.id}`
-    const whatsappNumber = userProfile.whatsapp || '310 2066593'
+    const userId = userProfile.id || userProfile.email?.split('@')[0] || 'socio'
+    const url = type === 'catalog'
+      ? `https://catalogo.4millones.com?socio=${userId}`
+      : `https://oportunidad.4millones.com?socio=${userId}`
+    const whatsapp = userProfile.whatsapp || '3102066593'
 
-    const messages = {
-      catalog: `🌿 *Catálogo Premium Gano Excel*
+    let message = ''
+    if (type === 'catalog') {
+      message = `🌿 *Catálogo Premium Gano Excel*
+
 Experimenta productos únicos con Ganoderma Lucidum de las 6 variedades más potentes del mundo.
-Descubre el bienestar auténtico:
-${catalogUrl}`,
 
-      business: `🏗️ *Arquitectura Empresarial 4M*
+Descubre el bienestar auténtico:
+${url}
+
+- ${displayName}`
+    } else {
+      message = `🏗️ *Arquitectura Empresarial 4M*
+
 El sistema que transforma el consumo diario en un activo empresarial heredable.
+
 Conoce la plataforma:
-${businessUrl}`
+${url}
+
+- ${displayName}`
     }
 
-    const cleanPhone = whatsappNumber.replace(/[^\d]/g, '')
-    const finalPhone = cleanPhone.startsWith('57') ? cleanPhone : `57${cleanPhone}`
-
-    const whatsappUrl = `https://wa.me/${finalPhone}?text=${encodeURIComponent(messages[type])}`
-    window.open(whatsappUrl, '_blank')
+    window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`, '_blank')
   }
 
   return (
@@ -317,7 +329,7 @@ ${businessUrl}`
       {/* Navegación */}
       <div className="py-2">
         <Link
-          href="/dashboard"
+          href="/nexus"
           className="flex items-center px-4 py-3 text-white/80 hover:text-white hover:bg-white/10 transition-colors group"
           onClick={onClose}
         >
@@ -366,14 +378,14 @@ ${businessUrl}`
                   </svg>
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-white">📱 Catálogo Digital</div>
-                  <div className="text-xs text-white/50">Productos premium</div>
+                  <div className="text-sm font-medium text-white">🌿 Catálogo Premium</div>
+                  <div className="text-xs text-white/50">Bienestar auténtico</div>
                 </div>
               </div>
             </div>
             <div className="flex space-x-2">
               <a
-                href={`https://catalogo.4millones.com?socio=${userProfile.id}`}
+                href={`https://catalogo.4millones.com?socio=${userProfile.id || userProfile.email?.split('@')[0] || 'socio'}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 bg-green-500/20 hover:bg-green-500/30 text-green-300 text-center py-2 px-3 rounded-lg text-xs font-medium transition-colors"
@@ -394,7 +406,7 @@ ${businessUrl}`
           </div>
         </div>
 
-        {/* ✅ PRESENTACIÓN DE OPORTUNIDAD ARREGLADA */}
+        {/* ✅ ARQUITECTURA EMPRESARIAL ARREGLADA */}
         <div className="px-4 py-2">
           <div className="bg-white/5 rounded-lg p-3">
             <div className="flex items-center justify-between mb-2">
@@ -405,20 +417,20 @@ ${businessUrl}`
                   </svg>
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-white">🚀 Oportunidad de Negocio</div>
-                  <div className="text-xs text-white/50">Visión empresarial</div>
+                  <div className="text-sm font-medium text-white">🏗️ Arquitectura Empresarial</div>
+                  <div className="text-xs text-white/50">Construir activos</div>
                 </div>
               </div>
             </div>
             <div className="flex space-x-2">
               <a
-                href={`https://oportunidad.4millones.com?socio=${userProfile.id}`}
+                href={`https://oportunidad.4millones.com?socio=${userProfile.id || userProfile.email?.split('@')[0] || 'socio'}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 text-center py-2 px-3 rounded-lg text-xs font-medium transition-colors"
                 onClick={onClose}
               >
-                👀 Ver Oportunidad
+                👀 Ver Plataforma
               </a>
               <button
                 onClick={() => {
@@ -613,7 +625,7 @@ export default function NexusIntelligentPage() {
                 {/* Desktop - Enlaces directos + Cerrar Sesión */}
                 <div className="hidden lg:flex items-center space-x-4">
                   <Link
-                    href="/dashboard"
+                    href="/nexus"
                     className="text-white/80 hover:text-white transition-colors font-medium"
                   >
                     Dashboard
@@ -802,7 +814,7 @@ export default function NexusIntelligentPage() {
             {userProfile ? (
               <div className="mt-6 lg:mt-8 p-3 lg:p-4 bg-green-500/20 border border-green-400/30 rounded-lg">
                 <p className="text-green-300 text-xs lg:text-sm font-medium">
-                  ✅ Sesión activa • Datos reales en tiempo real • <Link href="/dashboard" className="underline hover:text-green-200">Ver dashboard completo</Link>
+                  ✅ Sesión activa • Datos reales en tiempo real • <Link href="/profile" className="underline hover:text-green-200">Ver perfil completo</Link>
                 </p>
               </div>
             ) : (
@@ -879,68 +891,99 @@ export default function NexusIntelligentPage() {
         {/* CTA o Acciones según usuario */}
         {!userProfile && <RegistrationCTA />}
 
-        {/* ✅ HERRAMIENTAS DISPONIBLES AHORA CON BOTONES WHATSAPP */}
+        {/* ✅ ARREGLADO: Herramientas Disponibles con WhatsApp para TODOS */}
         <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 lg:p-8 border border-white/20">
           <h2 className="text-2xl lg:text-3xl font-bold text-white mb-4 lg:mb-6 text-center">
             ⚡ Herramientas Disponibles Ahora
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
-            {/* ✅ CATÁLOGO CON BOTONES WHATSAPP */}
-            <div className="bg-white/10 backdrop-blur-lg rounded-xl p-4 lg:p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 group">
+
+            {/* ✅ CATÁLOGO PREMIUM - CON BOTONES FUNCIONALES PARA TODOS */}
+            <div className="bg-white/10 backdrop-blur-lg rounded-xl p-4 lg:p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
               <div className="flex items-center space-x-3 lg:space-x-4 mb-4">
                 <div className="p-2 lg:p-3 bg-green-500/20 rounded-lg">
                   <svg className="w-5 lg:w-6 h-5 lg:h-6 text-green-400" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
                   </svg>
                 </div>
-                <div>
-                  <h3 className="text-base lg:text-lg font-bold text-white mb-1 lg:mb-2">📱 Catálogo Digital</h3>
-                  <p className="text-white/70 text-sm">Comparte productos con un toque profesional</p>
+                <div className="flex-1">
+                  <h3 className="text-base lg:text-lg font-bold text-white mb-1">🌿 Catálogo Premium</h3>
+                  <p className="text-white/70 text-sm">Productos únicos con Ganoderma Lucidum</p>
                 </div>
               </div>
-              <div className="flex space-x-3">
+              <div className="flex space-x-2">
                 <a
-                  href="https://catalogo.4millones.com"
+                  href={userProfile
+                    ? `https://catalogo.4millones.com?socio=${userProfile.id || userProfile.email?.split('@')[0] || 'socio'}`
+                    : 'https://catalogo.4millones.com'
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 bg-green-500/20 hover:bg-green-500/30 text-green-300 text-center py-3 px-4 rounded-lg text-sm font-medium transition-colors"
+                  className="flex-1 bg-green-500/20 hover:bg-green-500/30 text-green-300 text-center py-2 lg:py-3 px-3 lg:px-4 rounded-lg text-xs lg:text-sm font-medium transition-colors"
                 >
                   👀 Ver Catálogo
                 </a>
                 <button
-                  onClick={() => shareViaWhatsAppPublic('catalog')}
-                  className="flex-1 bg-green-600/20 hover:bg-green-600/30 text-green-300 text-center py-3 px-4 rounded-lg text-sm font-medium transition-colors"
+                  onClick={() => {
+                    const url = userProfile
+                      ? `https://catalogo.4millones.com?socio=${userProfile.id || userProfile.email?.split('@')[0] || 'socio'}`
+                      : 'https://catalogo.4millones.com'
+                    const whatsapp = userProfile?.whatsapp || '3102066593'
+                    const message = `🌿 *Catálogo Premium Gano Excel*
+
+Experimenta productos únicos con Ganoderma Lucidum de las 6 variedades más potentes del mundo.
+
+Descubre el bienestar auténtico:
+${url}`
+                    window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`, '_blank')
+                  }}
+                  className="flex-1 bg-green-600/20 hover:bg-green-600/30 text-green-300 text-center py-2 lg:py-3 px-3 lg:px-4 rounded-lg text-xs lg:text-sm font-medium transition-colors"
                 >
                   📱 Compartir
                 </button>
               </div>
             </div>
 
-            {/* ✅ OPORTUNIDAD CON BOTONES WHATSAPP */}
-            <div className="bg-white/10 backdrop-blur-lg rounded-xl p-4 lg:p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 group">
+            {/* ✅ ARQUITECTURA EMPRESARIAL - CON BOTONES FUNCIONALES PARA TODOS */}
+            <div className="bg-white/10 backdrop-blur-lg rounded-xl p-4 lg:p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
               <div className="flex items-center space-x-3 lg:space-x-4 mb-4">
                 <div className="p-2 lg:p-3 bg-blue-500/20 rounded-lg">
                   <svg className="w-5 lg:w-6 h-5 lg:h-6 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
                   </svg>
                 </div>
-                <div>
-                  <h3 className="text-base lg:text-lg font-bold text-white mb-1 lg:mb-2">🚀 Presentación de Oportunidad</h3>
-                  <p className="text-white/70 text-sm">Comparte la visión empresarial completa</p>
+                <div className="flex-1">
+                  <h3 className="text-base lg:text-lg font-bold text-white mb-1">🏗️ Arquitectura Empresarial</h3>
+                  <p className="text-white/70 text-sm">Sistema para construir activos heredables</p>
                 </div>
               </div>
-              <div className="flex space-x-3">
+              <div className="flex space-x-2">
                 <a
-                  href="https://oportunidad.4millones.com"
+                  href={userProfile
+                    ? `https://oportunidad.4millones.com?socio=${userProfile.id || userProfile.email?.split('@')[0] || 'socio'}`
+                    : 'https://oportunidad.4millones.com'
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 text-center py-3 px-4 rounded-lg text-sm font-medium transition-colors"
+                  className="flex-1 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 text-center py-2 lg:py-3 px-3 lg:px-4 rounded-lg text-xs lg:text-sm font-medium transition-colors"
                 >
-                  👀 Ver Oportunidad
+                  👀 Ver Plataforma
                 </a>
                 <button
-                  onClick={() => shareViaWhatsAppPublic('business')}
-                  className="flex-1 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 text-center py-3 px-4 rounded-lg text-sm font-medium transition-colors"
+                  onClick={() => {
+                    const url = userProfile
+                      ? `https://oportunidad.4millones.com?socio=${userProfile.id || userProfile.email?.split('@')[0] || 'socio'}`
+                      : 'https://oportunidad.4millones.com'
+                    const whatsapp = userProfile?.whatsapp || '3102066593'
+                    const message = `🏗️ *Arquitectura Empresarial 4M*
+
+El sistema que transforma el consumo diario en un activo empresarial heredable.
+
+Conoce la plataforma:
+${url}`
+                    window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`, '_blank')
+                  }}
+                  className="flex-1 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 text-center py-2 lg:py-3 px-3 lg:px-4 rounded-lg text-xs lg:text-sm font-medium transition-colors"
                 >
                   📱 Compartir
                 </button>

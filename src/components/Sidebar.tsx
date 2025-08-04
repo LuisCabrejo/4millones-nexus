@@ -34,27 +34,35 @@ export default function Sidebar({ userProfile }: SidebarProps) {
   const shareViaWhatsApp = (type: 'catalog' | 'business') => {
     if (!userProfile) return
 
-    const catalogUrl = `https://catalogo.4millones.com?socio=${userProfile.id}`
-    const businessUrl = `https://oportunidad.4millones.com?socio=${userProfile.id}`
+    let message = ''
+    let url = ''
+    const userId = userProfile.id || userProfile.email?.split('@')[0] || 'socio'
+    const whatsappNumber = userProfile.whatsapp || '3102066593'
 
-    const whatsappNumber = userProfile.whatsapp || '310 2066593'
+    // URLs personalizadas para usuario registrado
+    url = type === 'catalog'
+      ? `https://catalogo.4millones.com?socio=${userId}`
+      : `https://oportunidad.4millones.com?socio=${userId}`
 
-    const messages = {
-      catalog: `🌿 *Catálogo Premium Gano Excel*
+    // Mensajes estratégicos acordados
+    if (type === 'catalog') {
+      message = `🌿 *Catálogo Premium Gano Excel*
+
 Experimenta productos únicos con Ganoderma Lucidum de las 6 variedades más potentes del mundo.
-Descubre el bienestar auténtico:
-${catalogUrl}`,
 
-      business: `🏗️ *Arquitectura Empresarial 4M*
+Descubre el bienestar auténtico:
+${url}`
+    } else {
+      message = `🏗️ *Arquitectura Empresarial 4M*
+
 El sistema que transforma el consumo diario en un activo empresarial heredable.
+
 Conoce la plataforma:
-${businessUrl}`
+${url}`
     }
 
-    const cleanPhone = whatsappNumber.replace(/[^\d]/g, '')
-    const finalPhone = cleanPhone.startsWith('57') ? cleanPhone : `57${cleanPhone}`
-
-    const whatsappUrl = `https://wa.me/${finalPhone}?text=${encodeURIComponent(messages[type])}`
+    // Abrir WhatsApp
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')
   }
 
@@ -266,7 +274,7 @@ ${businessUrl}`
               </div>
             </div>
 
-            {/* ✅ HERRAMIENTAS ACTIVAS ARREGLADAS */}
+            {/* ✅ HERRAMIENTAS ACTIVAS - ARREGLADAS CON BOTONES WHATSAPP */}
             <div className="pt-6 border-t border-white/10">
               <p className="text-white/50 text-xs font-bold uppercase tracking-wider mb-4 px-5 flex items-center">
                 <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse" />
@@ -274,9 +282,9 @@ ${businessUrl}`
               </p>
 
               <div className="space-y-3">
-                {/* ✅ CATÁLOGO DIGITAL - Funcional */}
+                {/* ✅ CATÁLOGO PREMIUM - CON BOTONES FUNCIONALES */}
                 <div className="px-5">
-                  <div className="bg-white/5 rounded-lg p-3">
+                  <div className="bg-white/5 rounded-xl p-4 hover:bg-white/10 transition-all duration-300">
                     <div className="flex items-center space-x-3 mb-3">
                       <div className="p-2 bg-green-500/20 rounded-lg">
                         <svg className="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20">
@@ -284,18 +292,18 @@ ${businessUrl}`
                         </svg>
                       </div>
                       <div className="flex-1">
-                        <span className="block text-sm text-white font-medium">Catálogo Digital</span>
-                        <span className="block text-xs text-white/50">Compartir Productos</span>
+                        <span className="block text-sm text-white font-medium">Catálogo Premium</span>
+                        <span className="block text-xs text-white/50">Bienestar auténtico</span>
                       </div>
                     </div>
                     <div className="flex space-x-2">
                       <a
-                        href={`https://catalogo.4millones.com?socio=${userProfile.id}`}
+                        href={`https://catalogo.4millones.com?socio=${userProfile.id || userProfile.email?.split('@')[0] || 'socio'}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex-1 bg-green-500/20 hover:bg-green-500/30 text-green-300 text-center py-2 px-3 rounded-lg text-xs font-medium transition-colors"
                       >
-                        👀 Ver
+                        👀 Ver Catálogo
                       </a>
                       <button
                         onClick={() => shareViaWhatsApp('catalog')}
@@ -307,9 +315,9 @@ ${businessUrl}`
                   </div>
                 </div>
 
-                {/* ✅ OPORTUNIDAD DE NEGOCIO - Funcional */}
+                {/* ✅ ARQUITECTURA EMPRESARIAL - CON BOTONES FUNCIONALES */}
                 <div className="px-5">
-                  <div className="bg-white/5 rounded-lg p-3">
+                  <div className="bg-white/5 rounded-xl p-4 hover:bg-white/10 transition-all duration-300">
                     <div className="flex items-center space-x-3 mb-3">
                       <div className="p-2 bg-blue-500/20 rounded-lg">
                         <svg className="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
@@ -317,18 +325,18 @@ ${businessUrl}`
                         </svg>
                       </div>
                       <div className="flex-1">
-                        <span className="block text-sm text-white font-medium">Oportunidad de Negocio</span>
-                        <span className="block text-xs text-white/50">Presentar Visión</span>
+                        <span className="block text-sm text-white font-medium">Arquitectura Empresarial</span>
+                        <span className="block text-xs text-white/50">Construir activos</span>
                       </div>
                     </div>
                     <div className="flex space-x-2">
                       <a
-                        href={`https://oportunidad.4millones.com?socio=${userProfile.id}`}
+                        href={`https://oportunidad.4millones.com?socio=${userProfile.id || userProfile.email?.split('@')[0] || 'socio'}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex-1 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 text-center py-2 px-3 rounded-lg text-xs font-medium transition-colors"
                       >
-                        👀 Ver
+                        👀 Ver Plataforma
                       </a>
                       <button
                         onClick={() => shareViaWhatsApp('business')}

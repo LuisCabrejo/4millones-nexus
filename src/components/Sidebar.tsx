@@ -30,6 +30,34 @@ export default function Sidebar({ userProfile }: SidebarProps) {
     }
   }
 
+  // ✅ NUEVA FUNCIÓN: Compartir vía WhatsApp con mensajes estratégicos
+  const shareViaWhatsApp = (type: 'catalog' | 'business') => {
+    if (!userProfile) return
+
+    const catalogUrl = `https://catalogo.4millones.com?socio=${userProfile.id}`
+    const businessUrl = `https://oportunidad.4millones.com?socio=${userProfile.id}`
+
+    const whatsappNumber = userProfile.whatsapp || '310 2066593'
+
+    const messages = {
+      catalog: `🌿 *Catálogo Premium Gano Excel*
+Experimenta productos únicos con Ganoderma Lucidum de las 6 variedades más potentes del mundo.
+Descubre el bienestar auténtico:
+${catalogUrl}`,
+
+      business: `🏗️ *Arquitectura Empresarial 4M*
+El sistema que transforma el consumo diario en un activo empresarial heredable.
+Conoce la plataforma:
+${businessUrl}`
+    }
+
+    const cleanPhone = whatsappNumber.replace(/[^\d]/g, '')
+    const finalPhone = cleanPhone.startsWith('57') ? cleanPhone : `57${cleanPhone}`
+
+    const whatsappUrl = `https://wa.me/${finalPhone}?text=${encodeURIComponent(messages[type])}`
+    window.open(whatsappUrl, '_blank')
+  }
+
   if (!userProfile) {
     return null // No mostrar sidebar si no hay usuario autenticado
   }
@@ -238,53 +266,79 @@ export default function Sidebar({ userProfile }: SidebarProps) {
               </div>
             </div>
 
-            {/* Herramientas Activas */}
+            {/* ✅ HERRAMIENTAS ACTIVAS ARREGLADAS */}
             <div className="pt-6 border-t border-white/10">
               <p className="text-white/50 text-xs font-bold uppercase tracking-wider mb-4 px-5 flex items-center">
                 <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse" />
                 Herramientas Activas
               </p>
 
-              <div className="space-y-2">
-                <a
-                  href={process.env.NEXT_PUBLIC_CATALOG_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center px-5 py-3 rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition-all duration-300 group"
-                >
-                  <div className="p-2 bg-green-500/20 rounded-lg mr-4">
-                    <svg className="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
-                    </svg>
+              <div className="space-y-3">
+                {/* ✅ CATÁLOGO DIGITAL - Funcional */}
+                <div className="px-5">
+                  <div className="bg-white/5 rounded-lg p-3">
+                    <div className="flex items-center space-x-3 mb-3">
+                      <div className="p-2 bg-green-500/20 rounded-lg">
+                        <svg className="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
+                        </svg>
+                      </div>
+                      <div className="flex-1">
+                        <span className="block text-sm text-white font-medium">Catálogo Digital</span>
+                        <span className="block text-xs text-white/50">Compartir Productos</span>
+                      </div>
+                    </div>
+                    <div className="flex space-x-2">
+                      <a
+                        href={`https://catalogo.4millones.com?socio=${userProfile.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 bg-green-500/20 hover:bg-green-500/30 text-green-300 text-center py-2 px-3 rounded-lg text-xs font-medium transition-colors"
+                      >
+                        👀 Ver
+                      </a>
+                      <button
+                        onClick={() => shareViaWhatsApp('catalog')}
+                        className="flex-1 bg-green-600/20 hover:bg-green-600/30 text-green-300 text-center py-2 px-3 rounded-lg text-xs font-medium transition-colors"
+                      >
+                        📱 Compartir
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <span className="block text-sm">Catálogo Digital</span>
-                    <span className="block text-xs text-white/50">Compartir Productos</span>
-                  </div>
-                  <svg className="w-4 h-4 text-white/40 group-hover:text-white/60 transition-colors" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                  </svg>
-                </a>
+                </div>
 
-                <a
-                  href={process.env.NEXT_PUBLIC_BUSINESS_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center px-5 py-3 rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition-all duration-300 group"
-                >
-                  <div className="p-2 bg-blue-500/20 rounded-lg mr-4">
-                    <svg className="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
-                    </svg>
+                {/* ✅ OPORTUNIDAD DE NEGOCIO - Funcional */}
+                <div className="px-5">
+                  <div className="bg-white/5 rounded-lg p-3">
+                    <div className="flex items-center space-x-3 mb-3">
+                      <div className="p-2 bg-blue-500/20 rounded-lg">
+                        <svg className="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                      <div className="flex-1">
+                        <span className="block text-sm text-white font-medium">Oportunidad de Negocio</span>
+                        <span className="block text-xs text-white/50">Presentar Visión</span>
+                      </div>
+                    </div>
+                    <div className="flex space-x-2">
+                      <a
+                        href={`https://oportunidad.4millones.com?socio=${userProfile.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 text-center py-2 px-3 rounded-lg text-xs font-medium transition-colors"
+                      >
+                        👀 Ver
+                      </a>
+                      <button
+                        onClick={() => shareViaWhatsApp('business')}
+                        className="flex-1 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 text-center py-2 px-3 rounded-lg text-xs font-medium transition-colors"
+                      >
+                        📱 Compartir
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <span className="block text-sm">Oportunidad de Negocio</span>
-                    <span className="block text-xs text-white/50">Presentar Visión</span>
-                  </div>
-                  <svg className="w-4 h-4 text-white/40 group-hover:text-white/60 transition-colors" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                  </svg>
-                </a>
+                </div>
               </div>
             </div>
           </div>
